@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		    <script src="//cdn.jsdelivr.net/phaser/2.4.4/phaser.min.js"></script>
+			<script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
+			<script type="text/javascript" src="js/leap_frame.js" ></script>
+	</head>
+	<body>
+		<div id="game"></div>
+		<script>
+		var signal;
+		var instruction_index;
+		
+		var number_of_extend=0;
+			//handles leapmotion
+			//animate leapmotion
+//			setInterval(function(){
+//				signal=true;
+//			instruction_index=	parseInt(Math.random()*3,10);
+//				
+//			},1000);
+		var fingers_isextended=[];
+		start_leap(function(frame){
+			
+			//clear
+			signal=false;
+			fingers_isextended.splice(0,fingers_isextended.length);
+			number_of_extend=0;
+			
+			for(var f = 0; f < frame.fingers.length; f++){
+			    var finger = frame.fingers[f];
+			    fingers_isextended.push(finger.extended);
+			    if(finger.extended){
+			    	number_of_extend++;
+			    }
+					    
+			}
+			//fire the signal
+			if(fingers_isextended.length!=0){
+				signal=true;
+				instruction_index=number_of_extend;
+			}else
+			{
+				signal=false;
+			}
+			//console.log(frame.id);
+			console.log(fingers_isextended);
+		   	
+		});
+   
+   
+		</script>
+		<script>
+		//这个游戏框架也适用于短节奏歌
+		//handles game
+		var TOTAL_SONGS=6;
+			var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create,update:update });
+
+function preload() {
+	//3是拥有歌曲的数量
+	for(var i=0;i<TOTAL_SONGS;i++){
+		game.load.audio((i+1).toString(),"_"+(i+1).toString()+'.mp3');
+		
+	}
+
+}
+
+var  songs=[];
+var isplaying=false;
+var current_song=null;
+var isstarted=false;
+function create() {
+
+    game.stage.backgroundColor = '#414040';
+
+
+//获得一个Sound object
+	for(var i=0;i<TOTAL_SONGS;i++){
+		songs.push(game.add.audio((i+1).toString()));
+	}
+    //  Being mp3 files these take time to decode, so we can't play them instantly
+    //  Using setDecodedCallback we can be notified when they're ALL ready for use.
+    //  The audio files could decode in ANY order, we can never be sure which it'll be
+    game.sound.setDecodedCallback(songs, start, this);
+
+}
+
+
+function start() {
+	isstarted=true;
+	for(var i=0;i<TOTAL_SONGS;i++){
+		songs[i].onStop.add(soundStopped,this);
+		songs[i].onPlay.add(played,this);
+	}
+
+}
+function played(sound){
+	//if(isplaying)return;
+	current_song=sound;
+	isplaying=true;
+}
+function soundStopped(sound) {
+	isplaying=false;
+   	current_song=null;
+
+}	
+function update(){
+	if(isstarted){
+		//1.如果当前有音乐在放，则不做任何操作，等待音乐放映结束，如果当前没有音乐在放，则可以接受播放命令
+		if(isplaying){
+			//等待音乐放映结束
+		}
+		else{
+			if(signal){
+			songs[instruction_index].play();
+			isplaying=true;
+			}
+		}
+	}
+	
+	
+}
+function playFx(key) {
+
+    switch (key.keyCode)
+    {
+        case Phaser.Keyboard.ONE:
+           
+            blaster.play();
+            break;
+
+        case Phaser.Keyboard.TWO:
+           
+            explosion.play();
+            break;
+
+        case Phaser.Keyboard.THREE:
+          
+            sword.play();
+            break;
+    }
+
+}
+
+		</script>
+	</body>
+</html>
