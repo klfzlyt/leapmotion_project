@@ -12,17 +12,24 @@
 		<div id="game"></div>
 		<script>
 		var signal;
-		var instruction_index;
+		var instruction_index=0;
 		
 		
 		
 		
 		
-	
+		var instruction_command=["up","down","left","right"];
 		start_leap(function(frame){
 			
 			var ans=GetTheClockWiseGesture(frame);
+			var swipeDirec=GetTheSwipeGesture(frame);
+			if(swipteDirec.swipeDirection===instruction_command[instruction_index%4])
+			{
+				signal=true;
+				instruction_index++;
+			}
 			console.log(ans);
+			console.log(ans1);
 		
 		   	
 		});
