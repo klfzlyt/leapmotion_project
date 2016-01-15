@@ -11,25 +11,39 @@
 	<body>
 		<div id="game"></div>
 		<script>
-		var signal;
+//		setInterval(function(){
+//			
+//			signal=true;
+//				instruction_index++;
+//			
+//			
+//		},6000);
+//			
+		
+		</script>
+		<script>
+		var signal=true;
 		var instruction_index=0;
 		
 		
 		
 		
-		
+		var text;
 		var instruction_command=["up","down","left","right"];
 		start_leap(function(frame){
-			
-			var ans=GetTheClockWiseGesture(frame);
+			if(!isplaying){
+			var ans=GetTheClockWiseGesture(frame);			
 			var swipeDirec=GetTheSwipeGesture(frame);
-			if(swipteDirec.swipeDirection===instruction_command[instruction_index%4])
-			{
+			}
+			if(text)
+			text.text=instruction_command[instruction_index%4];
+			if(swipeDirec&&(swipeDirec.swipeDirection===instruction_command[instruction_index%4])){
 				signal=true;
 				instruction_index++;
 			}
+		//	signal=false;
 			console.log(ans);
-			console.log(ans1);
+			console.log(swipeDirec);
 		
 		   	
 		});
@@ -49,7 +63,7 @@
 		 * 
 		 * 
 		 */
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game', { preload: preload, create: create });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game', { preload: preload, create: create,update:update});
 
 function preload() {
     game.load.audio('cannon', [ './cannon1.mp3']);
@@ -59,6 +73,18 @@ function create() {
 	song = game.add.audio('cannon');
     song.allowMultiple = false;
 	game.sound.setDecodedCallback([song], start, this);	
+	var bar = game.add.graphics();
+    bar.beginFill(0x000000, 0.2);
+    bar.drawRect(0, 100, 800, 100);
+
+    var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+
+    //  The Text is positioned at 0, 100
+    text = game.add.text(0, 0, "phaser 2.4 text bounds", style);
+    text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+
+    //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
+    text.setTextBounds(0, 100, 800, 100);
 }
 //
 function start(){
@@ -79,6 +105,7 @@ function update(){
 			if(signal){
 				play_segment(instruction_index);
 				isplaying=true;
+				signal=false;
 			}
 		}
 	}
