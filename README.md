@@ -1,2 +1,2 @@
-# music_project
+# leapmotion_script
 for leap
