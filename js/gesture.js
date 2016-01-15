@@ -1,25 +1,25 @@
-	GestureState GetTheClockWiseGesture(Leap.Frame frame)
+	function GetTheClockWiseGesture(frame)
 	{
 		
-		GestureList gestures = frame.Gestures();
-		for (int g = 0; g < gestures.Count; ++g)
+		//enable gesture
+		var GESTURETYPE="circle";
+		var gestures = frame.gestures;
+		for (var g = 0; g < gestures.length; ++g)
 		{
-			Gesture ges = gestures[g];
-			if (ges.Type == Gesture.GestureType.TYPECIRCLE)
+			var ges = gestures[g];
+			if (ges.type === GESTURETYPE)
 			{
-				Leap.CircleGesture circle = new Leap.CircleGesture(ges);
-				if (circle.IsValid)
+				var circle = ges
+				if(circle.pointableIds)
 				{
-					if(circle.Pointable.Direction.AngleTo(circle.Normal)<=Math.PI/2)
-					{
-						return GestureState.ClockWise;
-					}
-					else
-					{
-						return GestureState.CounterClockWise;
-					}
-				}				
+					var pointable=circle.pointableIds[0];
+					var direction = frame.pointable(pointable).direction;
+					var dotProduct = Leap.vec3.dot(direction, circle.normal);
+					
+					if (dotProduct  >  0) return true;
+					return false;
+				}			
 			}          
 		}
-		return GestureState.Normal;	
+		return undefined;	
 	}

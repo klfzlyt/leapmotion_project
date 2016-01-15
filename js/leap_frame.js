@@ -4,7 +4,7 @@
 			
 				
 				function start_leap(callback){
-					var controller = new Leap.Controller();
+					var controller = new Leap.Controller({enableGestures: true});
 					controller.connect();
 				controller.on('frame', callback);	
 				}
