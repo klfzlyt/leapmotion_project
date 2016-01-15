@@ -12,7 +12,7 @@ for leap motion
 2.[指挥游戏](http://www.21thkids.com/lyt/leapmotion_project/direct.html)，使用swipe 和 circle Leap motion的api 监控用户手部的上下左右挥动，顺时针逆时针转圈，以此来模拟乐队指挥的手势。使用phaser库的addMarker，对歌曲进行任意位置切分，并规定用户出示上下左右，左右上下等指挥动作，来完成一首歌的播放，顺时针的监测使用向量点积即可判断
 ```js
       var pointable = circle.pointableIds[0];
-                       var direction = frame.pointable(pointable).direction;
-                       var dotProduct = Leap.vec3.dot(direction, circle.normal);
-                       ```
+      var direction = frame.pointable(pointable).direction;
+      var dotProduct = Leap.vec3.dot(direction, circle.normal);
+```
 3.[演奏游戏](http://www.21thkids.com/lyt/leapmotion_project/perform.html)  准备好和弦，然用户可以一个手势一个和弦
