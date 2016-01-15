@@ -22,7 +22,7 @@
 		
 		</script>
 		<script>
-		var signal=true;
+		var signal=false;
 		var instruction_index=0;
 		
 		
@@ -31,6 +31,7 @@
 		var text;
 		var instruction_command=["up","down","left","right"];
 		start_leap(function(frame){
+		if(isstarted){
 			if(!isplaying){
 			var ans=GetTheClockWiseGesture(frame);			
 			var swipeDirec=GetTheSwipeGesture(frame);
@@ -39,12 +40,12 @@
 			text.text=instruction_command[instruction_index%4];
 			if(swipeDirec&&(swipeDirec.swipeDirection===instruction_command[instruction_index%4])){
 				signal=true;
-				instruction_index++;
+				
 			}
 		//	signal=false;
 			console.log(ans);
 			console.log(swipeDirec);
-		
+		}
 		   	
 		});
    
@@ -106,6 +107,7 @@ function update(){
 				play_segment(instruction_index);
 				isplaying=true;
 				signal=false;
+				instruction_index++;
 			}
 		}
 	}
