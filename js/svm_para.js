@@ -23,6 +23,9 @@
 		_coefficient=coef;
 		_intercept=inter;
 		this.sgn=_sgn;
+		this.predict=function(X){
+			
+		}
 		this.decision_function=function(x){
 			var decision_func=[];
 			var classes_number=_unique(_support_vecter_classes).length;
