@@ -16,3 +16,6 @@ for leap motion
       var dotProduct = Leap.vec3.dot(direction, circle.normal);
 ```
 3.[演奏游戏](http://www.21thkids.com/lyt/leapmotion_project/perform.html)  准备好和弦，然用户可以一个手势一个和弦
+
+
+加入SVM预测模型
